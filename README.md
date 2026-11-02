@@ -22,7 +22,7 @@ macOS / Linux:
 ```
 
 1. 싱글 브로커(`localhost:9092`)가 뜹니다.
-2. 기본 `run`은 §3.3 Current 동기 전송입니다. `ch03-example`으로 메시지 5개를 보냅니다.
+2. 기본 `run`은 §3.3 Current입니다. `CustomerCountry`로 fire-and-forget, 동기, 비동기 전송을 한 번씩 합니다.
 3. 컨테이너는 그대로 둡니다. UI: http://localhost:9080
 
 책 코드와 4.4 권장 코드를 나눠 실행하려면:

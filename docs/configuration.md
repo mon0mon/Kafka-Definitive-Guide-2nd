@@ -214,7 +214,7 @@ gradlew.bat :ch03-producer:runS03Current
         │
         └─ CurrentSendSync
               -Dkafka.bootstrap.servers=localhost:9092
-              ch03-example 토픽으로 메시지 5개 동기 전송
+              CustomerCountry로 fire-and-forget, 동기, 비동기 전송
 ```
 
 Kafka만 올리거나 내리기:
