@@ -1,5 +1,8 @@
 import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.the
 import org.gradle.process.CommandLineArgumentProvider
 import xyz.mon0mon.gradle.ChapterExtension
 import xyz.mon0mon.gradle.KafkaCluster
@@ -12,7 +15,7 @@ plugins {
 val chapter = extensions.create("chapter", ChapterExtension::class.java)
 chapter.kafkaCluster.convention(KafkaCluster.SINGLE)
 
-tasks.named<JavaExec>("run") {
+fun JavaExec.attachChapterKafka() {
     val cluster = chapter.kafkaCluster
     dependsOn(cluster.map { it.composeTaskPath })
     jvmArgumentProviders.add(
@@ -20,4 +23,21 @@ tasks.named<JavaExec>("run") {
             listOf("-Dkafka.bootstrap.servers=${cluster.get().bootstrapServers}")
         },
     )
+}
+
+tasks.named<JavaExec>("run") {
+    attachChapterKafka()
+}
+
+afterEvaluate {
+    val mainRuntimeClasspath = the<SourceSetContainer>().named("main").map { it.runtimeClasspath }
+    chapter.examples.get().forEach { (name, main) ->
+        tasks.register<JavaExec>("run$name") {
+            group = "application"
+            description = "Run chapter example $name"
+            mainClass.set(main)
+            classpath = mainRuntimeClasspath.get()
+            attachChapterKafka()
+        }
+    }
 }

@@ -23,7 +23,7 @@ Kafka: The Definitive Guide 2nd Edition을 코드로 따라가기 위한 학습 
 .
 ├── buildSrc/                      공통 Gradle 컨벤션
 ├── common/                        bootstrap, producer Properties
-├── ch03-producer/                 3장 Producer 예제
+├── ch03-producer/                 3장 Producer. 절마다 Book / Current
 ├── docker/
 │   ├── compose-single.yml         KRaft 1노드 + UI
 │   └── compose-cluster.yml        3 컨트롤러 + 3 브로커 + UI
@@ -78,6 +78,10 @@ plugins {
 
 chapter {
     kafkaCluster.set(KafkaCluster.SINGLE)
+    examples.put("S02Book", "xyz.mon0mon.ch03.s02_create_producer.BookCreateProducer")
+    examples.put("S02Current", "xyz.mon0mon.ch03.s02_create_producer.CurrentCreateProducer")
+    examples.put("S03Book", "xyz.mon0mon.ch03.s03_send_sync.BookSendSync")
+    examples.put("S03Current", "xyz.mon0mon.ch03.s03_send_sync.CurrentSendSync")
 }
 
 dependencies {
@@ -85,7 +89,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("xyz.mon0mon.ch03.ProducerExampleKt")
+    mainClass.set("xyz.mon0mon.ch03.s03_send_sync.CurrentSendSync")
 }
 ```
 
@@ -107,7 +111,55 @@ application {
 예제 코드는 토폴로지를 하드코딩하지 않습니다.
 
 ```kotlin
-val props = KafkaSettings.stringProducerProperties(clientId = "ch03-producer")
+val props = KafkaSettings.stringProducerProperties(clientId = "ch03-s03-current")
+```
+
+## 예제 트랙 (Book / Current)
+
+챕터 모듈은 책 절마다 폴더를 두고, 실행 파일을 둘로 나눕니다. 비교 설명은 파일 최상단 KDoc만 씁니다.
+
+```text
+ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/
+  s02_create_producer/
+    BookCreateProducer.kt
+    CurrentCreateProducer.kt
+  s03_send_sync/
+    BookSendSync.kt
+    CurrentSendSync.kt
+```
+
+| 트랙 | 파일 | 내용 |
+|------|------|------|
+| book | `Book*.kt` | 책에 가까운 코드. 4.4에서 컴파일되게만 고치고, 고친 줄에 이유를 적는다. |
+| current | `Current*.kt` | 같은 절의 4.4 권장 코드. |
+| removed | 실행 파일 없음 | 4.0에서 삭제된 API는 KDoc `Removed:` / `Evolution:`에만 적는다. |
+
+진입점은 `object` + `@JvmStatic fun main`이다. `chapter.examples`에 등록하면 `run{Name}` JavaExec가 생긴다. `run`은 `application.mainClass`(보통 그 챕터의 대표 Current)다.
+
+KDoc 헤더 필드: `Book`, `Track`, `Client`, `Evolution`, 필요 시 `Replaces` / `Removed` / `Still valid`.
+
+파일 안 학습 위치는 IntelliJ `region`으로 표시한다. 이름은 책 절 제목을 그대로 쓴다.
+
+```kotlin
+// region 3.2 카프카 프로듀서 생성하기
+val producer = KafkaProducer<String, String>(kafkaProps)
+// endregion
+
+// region 3.3 카프카로 메시지 전달하기
+producer.send(record)
+// endregion
+```
+
+한 실행 파일에 이어지는 스니펫이 있으면 폴더를 억지로 쪼개지 않고 region으로 나눈다. 폴더명(`s02_create_producer`)은 그 파일이 시작하는 대표 절이다. Current 파일은 Book과 **같은 region 이름**을 쓴다.
+
+3장 실행:
+
+```bat
+gradlew.bat :ch03-producer:run
+gradlew.bat :ch03-producer:runS02Book
+gradlew.bat :ch03-producer:runS02Current
+gradlew.bat :ch03-producer:runS03Book
+gradlew.bat :ch03-producer:runS03Current
 ```
 
 시스템 프로퍼티가 없으면 `localhost:9092`로 떨어집니다. IntelliJ에서 `main`을 직접 실행한 경우가 여기 해당합니다.
@@ -148,7 +200,7 @@ val props = KafkaSettings.stringProducerProperties(clientId = "ch03-producer")
         │     docker compose -p kdg up
         │     kafka healthy + TCP 9092
         │
-        └─ ProducerExample
+        └─ CurrentSendSync
               -Dkafka.bootstrap.servers=localhost:9092
               ch03-example 토픽으로 메시지 5개 동기 전송
 ```
@@ -178,6 +230,8 @@ plugins {
 
 chapter {
     kafkaCluster.set(KafkaCluster.SINGLE)
+    examples.put("S02Book", "xyz.mon0mon.ch04.s02_create_consumer.BookCreateConsumer")
+    examples.put("S02Current", "xyz.mon0mon.ch04.s02_create_consumer.CurrentCreateConsumer")
 }
 
 dependencies {
@@ -185,7 +239,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("xyz.mon0mon.ch04.ConsumerExampleKt")
+    mainClass.set("xyz.mon0mon.ch04.s02_create_consumer.CurrentCreateConsumer")
 }
 ```
 

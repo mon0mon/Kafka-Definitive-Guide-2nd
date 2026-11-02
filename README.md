@@ -22,8 +22,17 @@ macOS / Linux:
 ```
 
 1. 싱글 브로커(`localhost:9092`)가 뜹니다.
-2. `ch03-example` 토픽으로 메시지 5개를 보냅니다.
+2. 기본 `run`은 §3.3 Current 동기 전송입니다. `ch03-example`으로 메시지 5개를 보냅니다.
 3. 컨테이너는 그대로 둡니다. UI: http://localhost:9080
+
+책 코드와 4.4 권장 코드를 나눠 실행하려면:
+
+```bat
+gradlew.bat :ch03-producer:runS02Book
+gradlew.bat :ch03-producer:runS02Current
+gradlew.bat :ch03-producer:runS03Book
+gradlew.bat :ch03-producer:runS03Current
+```
 
 내리기:
 
@@ -36,7 +45,7 @@ gradlew.bat composeDownForced
 | 경로 | 역할 |
 |------|------|
 | `common` | bootstrap 주소, producer 기본 Properties |
-| `ch03-producer` | 3장 Producer |
+| `ch03-producer` | 3장 Producer. 절마다 `Book*` / `Current*` |
 | `docker/compose-single.yml` | KRaft 1노드 + UI (9092 / 9080) |
 | `docker/compose-cluster.yml` | 3브로커 + UI (19092–19094 / 19080) |
 | `buildSrc` | 챕터/라이브러리 convention |

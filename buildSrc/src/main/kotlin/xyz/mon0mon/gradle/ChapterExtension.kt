@@ -1,5 +1,6 @@
 package xyz.mon0mon.gradle
 
+import org.gradle.api.provider.MapProperty
 import org.gradle.api.provider.Property
 
 enum class KafkaCluster(
@@ -18,4 +19,7 @@ enum class KafkaCluster(
 
 abstract class ChapterExtension {
     abstract val kafkaCluster: Property<KafkaCluster>
+
+    /** task `run{Name}` → fully qualified main class (`object` with `@JvmStatic fun main`) */
+    abstract val examples: MapProperty<String, String>
 }
