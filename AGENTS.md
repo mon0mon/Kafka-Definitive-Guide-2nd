@@ -30,9 +30,11 @@
    - 프로세스가 끝나는 예제는 `close()` 또는 `finally`를 넣는다.
    - 1.x 문자열 키(`"bootstrap.servers"`)는 살아 있는 코드로 두지 않고 KDoc/주석으로만 남긴다.
    - 사용자가 넣은 `// region …` / `// endregion`은 유지한다. 없으면 책 절 제목으로 감싼다 (`// region 3.2 카프카 프로듀서 생성하기`).
+   - `println` / `printStackTrace`는 `KotlinLogging.logger {}`로 바꾼다. `logger.error(e) { ... }`.
 5. 같은 폴더에 `Current{Name}.kt`를 새로 만든다. 같은 절의 목표를 kafka-clients **4.4.0** 관용으로 다시 쓴다.
    - `ProducerConfig` 상수, serializer는 `StringSerializer::class.java` 또는 생성자 인자
    - `KafkaProducer(...).use { }`
+   - 출력은 Book과 같이 `KotlinLogging`
    - 토픽/레코드 의미는 Book과 같게 둔다
    - Book과 **같은 region 이름**으로 대응 블록을 나눈다. 한 파일에 여러 절 스니펫이 있으면 Current도 같은 경계를 따른다.
 6. 두 파일 최상단에 KDoc만 둔다. 절별 `notes.md`는 만들지 않는다.
@@ -55,6 +57,7 @@
 ## 하지 말 것
 
 - Book과 Current를 한 `main`에 섞지 않는다.
+- 예제에 `println` / `printStackTrace`를 넣지 않는다.
 - 사용자 `region` 주석을 지우거나 이름을 임의로 바꾸지 않는다.
 - 다른 절·다른 챕터까지 임의로 확장하지 않는다.
 - `docs/configuration.md`에 있는 디렉터리·region 규칙을 AGENTS.md에 다시 풀어 쓰지 않는다. 링크하고 따른다.

@@ -10,6 +10,7 @@ Kafka: The Definitive Guide 2nd Edition을 코드로 따라가기 위한 학습 
 | Kotlin | 2.4.21 | `gradle/libs.versions.toml` |
 | JVM toolchain | 25 | `kotlin-library.conventions.gradle.kts` |
 | kafka-clients | 4.4.0 | `gradle/libs.versions.toml` |
+| 로깅 | kotlin-logging 8.0.4 + Logback 1.5.21 | `gradle/libs.versions.toml`, `common/.../logback.xml` |
 | 브로커 이미지 | `apache/kafka:4.4.0` (KRaft) | `docker/compose-*.yml` |
 | Kafka UI | `ghcr.io/kafbat/kafka-ui:v1.5.0` | `docker/compose-*.yml` |
 | Compose 플러그인 | `com.avast.gradle.docker-compose` 0.17.21 | 루트 `build.gradle.kts` |
@@ -58,7 +59,7 @@ include("ch03-producer")
 
 | 파일 | 플러그인 ID | 하는 일 |
 |------|-------------|---------|
-| `kotlin-library.conventions.gradle.kts` | `kotlin-library.conventions` | Kotlin JVM 25, kafka-clients, slf4j-simple, JUnit |
+| `kotlin-library.conventions.gradle.kts` | `kotlin-library.conventions` | Kotlin JVM 25, kafka-clients, kotlin-logging, Logback, JUnit |
 | `chapter.conventions.gradle.kts` | `chapter.conventions` | 위 설정 + `application` + Compose `run` 연동 |
 | `xyz/mon0mon/gradle/ChapterExtension.kt` | — | `chapter { kafkaCluster }` 타입 |
 | `xyz/mon0mon/gradle/VersionCatalog.kt` | — | 컨벤션에서 version catalog 조회 |
@@ -151,6 +152,17 @@ producer.send(record)
 ```
 
 한 실행 파일에 이어지는 스니펫이 있으면 폴더를 억지로 쪼개지 않고 region으로 나눈다. 폴더명(`s02_create_producer`)은 그 파일이 시작하는 대표 절이다. Current 파일은 Book과 **같은 region 이름**을 쓴다.
+
+예제 출력은 `println` / `printStackTrace` 대신 `KotlinLogging`을 쓴다. Book 트랙도 같다. 책의 `System.out.println`은 출력 수단만 로거로 바꾼다.
+
+```kotlin
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+private val logger = KotlinLogging.logger {}
+
+logger.info { "sent topic=${metadata.topic()} offset=${metadata.offset()}" }
+logger.error(e) { "send failed" }
+```
 
 3장 실행:
 

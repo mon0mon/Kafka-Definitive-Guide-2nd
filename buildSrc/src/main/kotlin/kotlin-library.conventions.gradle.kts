@@ -15,7 +15,9 @@ kotlin {
 
 dependencies {
     implementation(libsCatalog.findLibrary("kafka-clients").get())
-    implementation(libsCatalog.findLibrary("slf4j-simple").get())
+    implementation(libsCatalog.findLibrary("kotlin-logging").get())
+    implementation(libsCatalog.findLibrary("slf4j-api").get())
+    runtimeOnly(libsCatalog.findLibrary("logback-classic").get())
     testImplementation(kotlin("test"))
 }
 
