@@ -1,0 +1,13 @@
+[versions]
+kotlin = "2.4.21"
+kafka = "4.4.0"
+slf4j = "2.0.12"
+dockerCompose = "0.17.21"
+
+[libraries]
+kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+[plugins]
+docker-compose = { id = "com.avast.gradle.docker-compose", version.ref = "dockerCompose" }
