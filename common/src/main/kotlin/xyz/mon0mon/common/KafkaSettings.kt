@@ -8,9 +8,15 @@ object KafkaSettings {
     const val BOOTSTRAP_SERVERS_PROPERTY = "kafka.bootstrap.servers"
     const val BOOTSTRAP_SERVERS = "localhost:9092"
     const val CLUSTER_BOOTSTRAP_SERVERS = "localhost:19092,localhost:19093,localhost:19094"
+    const val SCHEMA_REGISTRY_URL_PROPERTY = "kafka.schema.registry.url"
+    const val SCHEMA_REGISTRY_URL = "http://localhost:8081"
+    const val CLUSTER_SCHEMA_REGISTRY_URL = "http://localhost:18081"
 
     fun bootstrapServers(): String =
         System.getProperty(BOOTSTRAP_SERVERS_PROPERTY, BOOTSTRAP_SERVERS)
+
+    fun schemaRegistryUrl(): String =
+        System.getProperty(SCHEMA_REGISTRY_URL_PROPERTY, SCHEMA_REGISTRY_URL)
 
     fun stringProducerProperties(
         clientId: String,

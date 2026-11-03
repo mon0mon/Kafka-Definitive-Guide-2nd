@@ -143,6 +143,31 @@ services:
       retries: 24
       start_period: 40s
 
+  schema-registry:
+    image: confluentinc/cp-schema-registry:8.4.0
+    container_name: kdg-cluster-schema-registry
+    hostname: schema-registry
+    ports:
+      - "18081:8081"
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: broker1:29092,broker2:29092,broker3:29092
+      SCHEMA_REGISTRY_KAFKASTORE_TOPIC_REPLICATION_FACTOR: 3
+    depends_on:
+      broker1:
+        condition: service_healthy
+      broker2:
+        condition: service_healthy
+      broker3:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8081/subjects')"]
+      interval: 5s
+      timeout: 10s
+      retries: 24
+      start_period: 30s
+
   kafka-ui:
     image: ghcr.io/kafbat/kafka-ui:v1.5.0
     container_name: kdg-cluster-ui
@@ -152,12 +177,15 @@ services:
       DYNAMIC_CONFIG_ENABLED: true
       KAFKA_CLUSTERS_0_NAME: local-cluster
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: broker1:29092,broker2:29092,broker3:29092
+      KAFKA_CLUSTERS_0_SCHEMAREGISTRY: http://schema-registry:8081
     depends_on:
       broker1:
         condition: service_healthy
       broker2:
         condition: service_healthy
       broker3:
+        condition: service_healthy
+      schema-registry:
         condition: service_healthy
 
 volumes:

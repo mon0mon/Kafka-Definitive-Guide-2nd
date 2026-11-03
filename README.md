@@ -2,7 +2,7 @@
 
 책 챕터별 Gradle 서브프로젝트입니다. `run`이 Docker Compose로 Kafka를 먼저 올립니다.
 
-설정 상세는 [docs/configuration.md](docs/configuration.md)를 봅니다.
+설정 상세는 [docs/configuration.md](docs/configuration.md)를 봅니다. Avro의 GenericRecord, SpecificRecord, Kotlin 처리와 자바 호환은 [avro-serializer-kotlin.md](ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/s05_serializer/avro-serializer-kotlin.md)를 봅니다. Schema Registry 등록과 조회는 [schema-registry.md](ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/s05_serializer/schema-registry.md)를 봅니다.
 
 ## 필요 환경
 
@@ -32,6 +32,14 @@ gradlew.bat :ch03-producer:runS02Book
 gradlew.bat :ch03-producer:runS02Current
 gradlew.bat :ch03-producer:runS03Book
 gradlew.bat :ch03-producer:runS03Current
+gradlew.bat :ch03-producer:runS05Book
+gradlew.bat :ch03-producer:runS05Current
+```
+
+스키마 변경 호환성 테스트는 Docker가 떠 있는 상태에서 Testcontainers로 브로커와 Schema Registry를 띄웁니다.
+
+```bat
+gradlew.bat :ch03-producer:test --tests xyz.mon0mon.ch03.s05_serializer.SchemaCompatibilityTest
 ```
 
 내리기:
@@ -46,8 +54,8 @@ gradlew.bat composeDownForced
 |------|------|
 | `common` | bootstrap 주소, producer 기본 Properties |
 | `ch03-producer` | 3장 Producer. 절마다 `Book*` / `Current*` |
-| `docker/compose-single.yml` | KRaft 1노드 + UI (9092 / 9080) |
-| `docker/compose-cluster.yml` | 3브로커 + UI (19092–19094 / 19080) |
+| `docker/compose-single.yml` | KRaft 1노드 + Schema Registry + UI (9092 / 8081 / 9080) |
+| `docker/compose-cluster.yml` | 3브로커 + Schema Registry + UI (19092–19094 / 18081 / 19080) |
 | `buildSrc` | 챕터/라이브러리 convention |
 
 ## 챕터별 싱글 / 클러스터
@@ -69,9 +77,10 @@ chapter {
 |---|--------|---------|
 | 기동 | `composeUp` | `clusterComposeUp` |
 | bootstrap | `localhost:9092` | `localhost:19092,19093,19094` |
+| Schema Registry | http://localhost:8081 | http://localhost:18081 |
 | UI | http://localhost:9080 | http://localhost:19080 |
 
-`run`이 선택한 Compose를 올리고 `-Dkafka.bootstrap.servers`를 넣습니다. 예제는 `KafkaSettings.bootstrapServers()`로 그 값을 읽습니다.
+`run`이 선택한 Compose를 올리고 `-Dkafka.bootstrap.servers`, `-Dkafka.schema.registry.url`을 넣습니다. 예제는 `KafkaSettings.bootstrapServers()`와 `KafkaSettings.schemaRegistryUrl()`로 그 값을 읽습니다.
 
 ## 새 챕터
 

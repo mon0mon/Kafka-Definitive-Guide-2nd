@@ -20,7 +20,10 @@ fun JavaExec.attachChapterKafka() {
     dependsOn(cluster.map { it.composeTaskPath })
     jvmArgumentProviders.add(
         CommandLineArgumentProvider {
-            listOf("-Dkafka.bootstrap.servers=${cluster.get().bootstrapServers}")
+            listOf(
+                "-Dkafka.bootstrap.servers=${cluster.get().bootstrapServers}",
+                "-Dkafka.schema.registry.url=${cluster.get().schemaRegistryUrl}",
+            )
         },
     )
 }

@@ -5,13 +5,24 @@ slf4j = "2.0.17"
 kotlinLogging = "8.0.4"
 logback = "1.5.21"
 dockerCompose = "0.17.21"
+avro = "1.12.2"
+confluent = "8.4.0"
+avro4k = "2.10.0"
+testcontainers = "2.0.5"
 
 [libraries]
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
+avro = { module = "org.apache.avro:avro", version.ref = "avro" }
+kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version.ref = "confluent" }
+avro4k-confluent-kafka-serializer = { module = "com.github.avro-kotlin.avro4k:avro4k-confluent-kafka-serializer", version.ref = "avro4k" }
 kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlinLogging" }
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+testcontainers-kafka = { module = "org.testcontainers:testcontainers-kafka", version.ref = "testcontainers" }
 
 [plugins]
 docker-compose = { id = "com.avast.gradle.docker-compose", version.ref = "dockerCompose" }
+avro-kotlin = { id = "io.github.avro-kotlin", version.ref = "avro4k" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

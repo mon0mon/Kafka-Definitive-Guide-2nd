@@ -22,6 +22,26 @@ class KafkaSettingsTest {
     }
 
     @Test
+    fun `schema registry url falls back to single cluster`() {
+        System.clearProperty(KafkaSettings.SCHEMA_REGISTRY_URL_PROPERTY)
+
+        assertEquals(KafkaSettings.SCHEMA_REGISTRY_URL, KafkaSettings.schemaRegistryUrl())
+    }
+
+    @Test
+    fun `schema registry url honors system property`() {
+        System.setProperty(
+            KafkaSettings.SCHEMA_REGISTRY_URL_PROPERTY,
+            KafkaSettings.CLUSTER_SCHEMA_REGISTRY_URL,
+        )
+        try {
+            assertEquals(KafkaSettings.CLUSTER_SCHEMA_REGISTRY_URL, KafkaSettings.schemaRegistryUrl())
+        } finally {
+            System.clearProperty(KafkaSettings.SCHEMA_REGISTRY_URL_PROPERTY)
+        }
+    }
+
+    @Test
     fun `bootstrap servers honor system property`() {
         System.setProperty(
             KafkaSettings.BOOTSTRAP_SERVERS_PROPERTY,

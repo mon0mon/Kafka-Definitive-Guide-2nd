@@ -10,10 +10,15 @@ Kafka: The Definitive Guide 2nd Edition을 코드로 따라가기 위한 학습 
 | Kotlin | 2.4.21 | `gradle/libs.versions.toml` |
 | JVM toolchain | 25 | `kotlin-library.conventions.gradle.kts` |
 | kafka-clients | 4.4.0 | `gradle/libs.versions.toml` |
+| Apache Avro | 1.12.2 | `gradle/libs.versions.toml` |
+| kafka-avro-serializer | 8.4.0 (Confluent Platform, Kafka 4.4) | `gradle/libs.versions.toml`, `kotlin-library.conventions` |
+| avro4k | 2.10.0 (`io.github.avro-kotlin`, `avro4k-confluent-kafka-serializer`, Kotlin serialization) | `ch03-producer`만. `src/main/avro/*.avsc` → Kotlin 클래스 |
+| Schema Registry | `confluentinc/cp-schema-registry:8.4.0` | `docker/compose-*.yml` |
 | 로깅 | kotlin-logging 8.0.4 + Logback 1.5.21 | `gradle/libs.versions.toml`, `common/.../logback.xml` |
 | 브로커 이미지 | `apache/kafka:4.4.0` (KRaft) | `docker/compose-*.yml` |
 | Kafka UI | `ghcr.io/kafbat/kafka-ui:v1.5.0` | `docker/compose-*.yml` |
 | Compose 플러그인 | `com.avast.gradle.docker-compose` 0.17.21 | 루트 `build.gradle.kts` |
+| Testcontainers | 2.0.5 (`testcontainers`, `testcontainers-kafka`) | `ch03-producer` test. 이미지는 catalog의 kafka 4.4.0, confluent 8.4.0 |
 | 그룹 | `xyz.mon0mon` | convention 플러그인 |
 
 버전은 `gradle/libs.versions.toml`에서만 올립니다. 서브프로젝트 `build.gradle.kts`에 버전을 적지 않습니다.
@@ -26,8 +31,8 @@ Kafka: The Definitive Guide 2nd Edition을 코드로 따라가기 위한 학습 
 ├── common/                        bootstrap, producer Properties
 ├── ch03-producer/                 3장 Producer. 절마다 Book / Current
 ├── docker/
-│   ├── compose-single.yml         KRaft 1노드 + UI
-│   └── compose-cluster.yml        3 컨트롤러 + 3 브로커 + UI
+│   ├── compose-single.yml         KRaft 1노드 + Schema Registry + UI
+│   └── compose-cluster.yml        3 컨트롤러 + 3 브로커 + Schema Registry + UI
 ├── gradle/libs.versions.toml
 ├── docs/configuration.md          이 문서
 ├── build.gradle.kts               루트 Compose만 담당 (앱 아님)
@@ -53,18 +58,24 @@ include("ch03-producer")
 
 저장소는 `settings.gradle.kts`의 `dependencyResolutionManagement`만 사용합니다. (`FAIL_ON_PROJECT_REPOS`)
 
+Maven Central 외에 `io.confluent` 그룹만 `https://packages.confluent.io/maven/`에서 받습니다. `KafkaAvroSerializer`는 Central에 없습니다. Confluent 8.4가 `kafka-clients:8.4.0-ccs`를 요구하므로, `kotlin-library.conventions`가 Apache `kafka-clients` 4.4.0을 `strictly`로 고정합니다.
+
 ## buildSrc 컨벤션
 
 `buildSrc`는 Gradle이 자동으로 컴파일해서 빌드 스크립트 클래스패스에 올립니다.
 
 | 파일 | 플러그인 ID | 하는 일 |
 |------|-------------|---------|
-| `kotlin-library.conventions.gradle.kts` | `kotlin-library.conventions` | Kotlin JVM 25, kafka-clients, kotlin-logging, Logback, JUnit |
+| `kotlin-library.conventions.gradle.kts` | `kotlin-library.conventions` | Kotlin JVM 25, kafka-clients, Apache Avro, kafka-avro-serializer, kotlin-logging, Logback, JUnit |
 | `chapter.conventions.gradle.kts` | `chapter.conventions` | 위 설정 + `application` + Compose `run` 연동 |
 | `xyz/mon0mon/gradle/ChapterExtension.kt` | — | `chapter { kafkaCluster }` 타입 |
 | `xyz/mon0mon/gradle/VersionCatalog.kt` | — | 컨벤션에서 version catalog 조회 |
 
 라이브러리 모듈은 `kotlin-library.conventions`만, 실행 예제 모듈은 `chapter.conventions`를 씁니다.
+
+Avro 시리얼라이저의 `GenericRecord`, 자바 `SpecificRecord`, Kotlin avro4k 차이는 [avro-serializer-kotlin.md](../ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/s05_serializer/avro-serializer-kotlin.md)에 정리해 두었습니다. Schema Registry의 subject, 등록, 조회는 [schema-registry.md](../ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/s05_serializer/schema-registry.md)에 정리해 두었습니다.
+
+Avro 스키마로 Kotlin 클래스를 만드는 챕터만 `io.github.avro-kotlin`을 추가합니다. 입력은 그 모듈의 `src/main/avro/*.avsc`이고, 생성 결과는 `build/generated/sources/avro/main`입니다. `ch03-producer`는 `Customer.avsc` 하나만 생성합니다. `customer_old.json`과 `customer_new.json`은 책의 스키마 진화 원문이라 생성 입력에 넣지 않습니다. 둘 다 레코드 이름이 `Customer`입니다. `runS05Book`과 `runS05Current`는 Avro 1.12 클래스 허용 목록으로 `-Dorg.apache.avro.SERIALIZABLE_PACKAGES=customerManagement.avro`를 넣습니다.
 
 ## 챕터별 클러스터 선택
 
@@ -98,16 +109,16 @@ application {
 
 `KafkaCluster` 정의 (`ChapterExtension.kt`):
 
-| 값 | Compose 태스크 | bootstrap | UI |
-|----|----------------|-----------|-----|
-| `SINGLE` | `:composeUp` | `localhost:9092` | http://localhost:9080 |
-| `CLUSTER` | `:clusterComposeUp` | `localhost:19092,19093,19094` | http://localhost:19080 |
+| 값 | Compose 태스크 | bootstrap | Schema Registry | UI |
+|----|----------------|-----------|-----------------|-----|
+| `SINGLE` | `:composeUp` | `localhost:9092` | http://localhost:8081 | http://localhost:9080 |
+| `CLUSTER` | `:clusterComposeUp` | `localhost:19092,19093,19094` | http://localhost:18081 | http://localhost:19080 |
 
 `run` 시 convention이 하는 일:
 
 1. 선택한 Compose 태스크에 `dependsOn`
-2. JVM에 `-Dkafka.bootstrap.servers=...` 주입
-3. `KafkaSettings.bootstrapServers()`가 그 시스템 프로퍼티를 읽음
+2. JVM에 `-Dkafka.bootstrap.servers=...`와 `-Dkafka.schema.registry.url=...` 주입. 값은 `KafkaCluster`의 `bootstrapServers`, `schemaRegistryUrl`
+3. `KafkaSettings.bootstrapServers()`와 `KafkaSettings.schemaRegistryUrl()`가 그 시스템 프로퍼티를 읽음. 없으면 싱글 주소로 떨어짐
 
 예제 코드는 토폴로지를 하드코딩하지 않습니다.
 
@@ -127,6 +138,9 @@ ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/
   s03_send_sync/
     BookSendSync.kt
     CurrentSendSync.kt
+  s05_serializer/
+    BookAvroSerializer.kt
+    CurrentAvroSerializer.kt
 ```
 
 | 트랙 | 파일 | 내용 |
@@ -172,6 +186,8 @@ gradlew.bat :ch03-producer:runS02Book
 gradlew.bat :ch03-producer:runS02Current
 gradlew.bat :ch03-producer:runS03Book
 gradlew.bat :ch03-producer:runS03Current
+gradlew.bat :ch03-producer:runS05Book
+gradlew.bat :ch03-producer:runS05Current
 ```
 
 시스템 프로퍼티가 없으면 `localhost:9092`로 떨어집니다. IntelliJ에서 `main`을 직접 실행한 경우가 여기 해당합니다.
@@ -187,8 +203,9 @@ gradlew.bat :ch03-producer:runS03Current
 | 태스크 | `composeUp` / `composeDownForced` | `clusterComposeUp` / `clusterComposeDownForced` |
 | 브로커 역할 | broker+controller 1노드 | controller 3 + broker 3 |
 | 호스트 포트 | 9092 | 19092, 19093, 19094 |
+| Schema Registry | http://localhost:8081 | http://localhost:18081 |
 | UI 포트 | 9080 | 19080 |
-| 컨테이너 | `kdg-single-kafka`, `kdg-single-ui` | `kdg-cluster-controller*`, `kdg-cluster-broker*`, `kdg-cluster-ui` |
+| 컨테이너 | `kdg-single-kafka`, `kdg-single-schema-registry`, `kdg-single-ui` | `kdg-cluster-controller*`, `kdg-cluster-broker*`, `kdg-cluster-schema-registry`, `kdg-cluster-ui` |
 | 볼륨 | named volume `kdg-single-data` | named volume `kdg-cluster-*` |
 
 공통 동작:
@@ -227,6 +244,12 @@ gradlew.bat clusterComposeDownForced
 ```
 
 첫 전송에서 `UNKNOWN_TOPIC_OR_PARTITION`이 한 번 나올 수 있습니다. 싱글 compose는 `KAFKA_AUTO_CREATE_TOPICS_ENABLE=true`라서 곧 토픽이 만들어집니다.
+
+스키마 호환성 테스트는 Compose 스택과 별도로 Testcontainers가 `apache/kafka`와 `cp-schema-registry`를 띄웁니다. Docker가 떠 있어야 합니다.
+
+```bat
+gradlew.bat :ch03-producer:test --tests xyz.mon0mon.ch03.s05_serializer.SchemaCompatibilityTest
+```
 
 ## 새 챕터 모듈
 
@@ -269,7 +292,7 @@ Streams, Connect, 보안 등 추가 의존성과 compose overlay는 그 챕터�
 직접 Run이 필요하면:
 
 1. Before Run에 Gradle 태스크 `composeUp` 또는 `clusterComposeUp`
-2. VM options에 `-Dkafka.bootstrap.servers=localhost:9092` 또는 클러스터 주소
+2. VM options에 `-Dkafka.bootstrap.servers=localhost:9092`와 `-Dkafka.schema.registry.url=http://localhost:8081`. 클러스터는 `19092`–`19094`와 `http://localhost:18081`
 
 Gradle 모듈이 안 보이면 Gradle 새로고침을 한 번 합니다.
 

@@ -5,14 +5,17 @@ import org.gradle.api.provider.Property
 
 enum class KafkaCluster(
     val bootstrapServers: String,
+    val schemaRegistryUrl: String,
     val composeTaskPath: String,
 ) {
     SINGLE(
         bootstrapServers = "localhost:9092",
+        schemaRegistryUrl = "http://localhost:8081",
         composeTaskPath = ":composeUp",
     ),
     CLUSTER(
         bootstrapServers = "localhost:19092,localhost:19093,localhost:19094",
+        schemaRegistryUrl = "http://localhost:18081",
         composeTaskPath = ":clusterComposeUp",
     ),
 }
