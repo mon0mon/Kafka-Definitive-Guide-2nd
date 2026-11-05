@@ -16,6 +16,8 @@ chapter {
     examples.put("S03Current", "xyz.mon0mon.ch03.s03_send_sync.CurrentSendSync")
     examples.put("S05Book", "xyz.mon0mon.ch03.s05_serializer.BookAvroSerializer")
     examples.put("S05Current", "xyz.mon0mon.ch03.s05_serializer.CurrentAvroSerializer")
+    examples.put("S06Book", "xyz.mon0mon.ch03.s06_partition.BookCustomPartitioner")
+    examples.put("S06Current", "xyz.mon0mon.ch03.s06_partition.CurrentCustomPartitioner")
 }
 
 dependencies {

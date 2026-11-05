@@ -34,6 +34,8 @@ gradlew.bat :ch03-producer:runS03Book
 gradlew.bat :ch03-producer:runS03Current
 gradlew.bat :ch03-producer:runS05Book
 gradlew.bat :ch03-producer:runS05Current
+gradlew.bat :ch03-producer:runS06Book
+gradlew.bat :ch03-producer:runS06Current
 ```
 
 스키마 변경 호환성 테스트는 Docker가 떠 있는 상태에서 Testcontainers로 브로커와 Schema Registry를 띄웁니다.
