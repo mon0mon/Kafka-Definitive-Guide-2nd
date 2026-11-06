@@ -144,6 +144,12 @@ ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/
   s06_partition/
     BookCustomPartitioner.kt
     CurrentCustomPartitioner.kt
+  s07_headers/
+    BookHeaders.kt
+    CurrentHeaders.kt
+  s08_interceptor/
+    BookInterceptor.kt
+    CurrentInterceptor.kt
 ```
 
 | 트랙 | 파일 | 내용 |
@@ -193,6 +199,10 @@ gradlew.bat :ch03-producer:runS05Book
 gradlew.bat :ch03-producer:runS05Current
 gradlew.bat :ch03-producer:runS06Book
 gradlew.bat :ch03-producer:runS06Current
+gradlew.bat :ch03-producer:runS07Book
+gradlew.bat :ch03-producer:runS07Current
+gradlew.bat :ch03-producer:runS08Book
+gradlew.bat :ch03-producer:runS08Current
 ```
 
 시스템 프로퍼티가 없으면 `localhost:9092`로 떨어집니다. IntelliJ에서 `main`을 직접 실행한 경우가 여기 해당합니다.

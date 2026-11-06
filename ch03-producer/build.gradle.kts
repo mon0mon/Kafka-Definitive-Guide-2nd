@@ -18,6 +18,10 @@ chapter {
     examples.put("S05Current", "xyz.mon0mon.ch03.s05_serializer.CurrentAvroSerializer")
     examples.put("S06Book", "xyz.mon0mon.ch03.s06_partition.BookCustomPartitioner")
     examples.put("S06Current", "xyz.mon0mon.ch03.s06_partition.CurrentCustomPartitioner")
+    examples.put("S07Book", "xyz.mon0mon.ch03.s07_headers.BookHeaders")
+    examples.put("S07Current", "xyz.mon0mon.ch03.s07_headers.CurrentHeaders")
+    examples.put("S08Book", "xyz.mon0mon.ch03.s08_interceptor.BookInterceptor")
+    examples.put("S08Current", "xyz.mon0mon.ch03.s08_interceptor.CurrentInterceptor")
 }
 
 dependencies {
