@@ -26,3 +26,4 @@ rootProject.name = "Kafka_The_Definitive_Guide_2nd"
 
 include("common")
 include("ch03-producer")
+include("ch04-consumer")
