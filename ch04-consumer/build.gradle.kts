@@ -12,6 +12,8 @@ chapter {
     examples.put("S03Current", "xyz.mon0mon.ch04.s03_subscribe.CurrentSubscribe")
     examples.put("S04Book", "xyz.mon0mon.ch04.s04_poll_loop.BookPollLoop")
     examples.put("S04Current", "xyz.mon0mon.ch04.s04_poll_loop.CurrentPollLoop")
+    examples.put("S06Book", "xyz.mon0mon.ch04.s06_offset_commit.BookCurrentOffsetCommit")
+    examples.put("S06Current", "xyz.mon0mon.ch04.s06_offset_commit.CurrentCurrentOffsetCommit")
 }
 
 dependencies {
