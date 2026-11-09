@@ -28,6 +28,14 @@ chapter {
         "S063RetryCurrent",
         "xyz.mon0mon.ch04.s06_offset_commit.p03_async_commit.CurrentAsyncCommitRetry",
     )
+    examples.put(
+        "S064Book",
+        "xyz.mon0mon.ch04.s06_offset_commit.p04_sync_async_commit.BookSyncAsyncCommit",
+    )
+    examples.put(
+        "S064Current",
+        "xyz.mon0mon.ch04.s06_offset_commit.p04_sync_async_commit.CurrentSyncAsyncCommit",
+    )
 }
 
 dependencies {
