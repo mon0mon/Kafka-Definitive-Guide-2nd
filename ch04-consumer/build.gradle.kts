@@ -44,6 +44,8 @@ chapter {
         "S065Current",
         "xyz.mon0mon.ch04.s06_offset_commit.p05_specified_offset.CurrentSpecifiedOffset",
     )
+    examples.put("S07Book", "xyz.mon0mon.ch04.s07_rebalance_listener.BookRebalanceListener")
+    examples.put("S07Current", "xyz.mon0mon.ch04.s07_rebalance_listener.CurrentRebalanceListener")
 }
 
 dependencies {
