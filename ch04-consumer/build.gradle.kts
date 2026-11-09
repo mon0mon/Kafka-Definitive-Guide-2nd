@@ -14,6 +14,20 @@ chapter {
     examples.put("S04Current", "xyz.mon0mon.ch04.s04_poll_loop.CurrentPollLoop")
     examples.put("S06Book", "xyz.mon0mon.ch04.s06_offset_commit.BookCurrentOffsetCommit")
     examples.put("S06Current", "xyz.mon0mon.ch04.s06_offset_commit.CurrentCurrentOffsetCommit")
+    examples.put("S063Book", "xyz.mon0mon.ch04.s06_offset_commit.p03_async_commit.BookAsyncCommit")
+    examples.put("S063Current", "xyz.mon0mon.ch04.s06_offset_commit.p03_async_commit.CurrentAsyncCommit")
+    examples.put(
+        "S063CallbackBook",
+        "xyz.mon0mon.ch04.s06_offset_commit.p03_async_commit.BookAsyncCommitCallback",
+    )
+    examples.put(
+        "S063CallbackCurrent",
+        "xyz.mon0mon.ch04.s06_offset_commit.p03_async_commit.CurrentAsyncCommitCallback",
+    )
+    examples.put(
+        "S063RetryCurrent",
+        "xyz.mon0mon.ch04.s06_offset_commit.p03_async_commit.CurrentAsyncCommitRetry",
+    )
 }
 
 dependencies {
