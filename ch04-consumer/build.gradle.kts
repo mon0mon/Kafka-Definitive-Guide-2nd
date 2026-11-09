@@ -36,6 +36,14 @@ chapter {
         "S064Current",
         "xyz.mon0mon.ch04.s06_offset_commit.p04_sync_async_commit.CurrentSyncAsyncCommit",
     )
+    examples.put(
+        "S065Book",
+        "xyz.mon0mon.ch04.s06_offset_commit.p05_specified_offset.BookSpecifiedOffset",
+    )
+    examples.put(
+        "S065Current",
+        "xyz.mon0mon.ch04.s06_offset_commit.p05_specified_offset.CurrentSpecifiedOffset",
+    )
 }
 
 dependencies {
