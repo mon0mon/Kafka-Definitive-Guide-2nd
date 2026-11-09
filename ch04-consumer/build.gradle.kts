@@ -48,6 +48,8 @@ chapter {
     examples.put("S07Current", "xyz.mon0mon.ch04.s07_rebalance_listener.CurrentRebalanceListener")
     examples.put("S08Book", "xyz.mon0mon.ch04.s08_specific_offset.BookSpecificOffset")
     examples.put("S08Current", "xyz.mon0mon.ch04.s08_specific_offset.CurrentSpecificOffset")
+    examples.put("S09Book", "xyz.mon0mon.ch04.s09_exit_poll_loop.BookExitPollLoop")
+    examples.put("S09Current", "xyz.mon0mon.ch04.s09_exit_poll_loop.CurrentExitPollLoop")
 }
 
 dependencies {
