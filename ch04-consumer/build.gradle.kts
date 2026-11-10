@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.JavaExec
 import xyz.mon0mon.gradle.KafkaCluster
 
 plugins {
@@ -52,6 +53,8 @@ chapter {
     examples.put("S09Current", "xyz.mon0mon.ch04.s09_exit_poll_loop.CurrentExitPollLoop")
     examples.put("S101Book", "xyz.mon0mon.ch04.s10_custom_deserializer.BookCustomerRoundTrip")
     examples.put("S101Current", "xyz.mon0mon.ch04.s10_custom_deserializer.CurrentCustomerRoundTrip")
+    examples.put("S102Book", "xyz.mon0mon.ch04.s102_avro_deserializer.BookAvroDeserializer")
+    examples.put("S102Current", "xyz.mon0mon.ch04.s102_avro_deserializer.CurrentAvroDeserializer")
 }
 
 dependencies {
@@ -61,4 +64,14 @@ dependencies {
 
 application {
     mainClass.set("xyz.mon0mon.ch04.s02_create_consumer.CurrentCreateConsumer")
+}
+
+afterEvaluate {
+    listOf("runS102Book", "runS102Current").forEach { taskName ->
+        tasks.named<JavaExec>(taskName) {
+            // Avro 1.12는 스키마 풀네임과 같은 클래스를 로드하기 전에 패키지 허용 목록을 본다.
+            // ch03이 만든 customerManagement.avro.Customer가 이 모듈 클래스패스에 있다.
+            jvmArgs("-Dorg.apache.avro.SERIALIZABLE_PACKAGES=customerManagement.avro")
+        }
+    }
 }
