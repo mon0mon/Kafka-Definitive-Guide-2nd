@@ -1,6 +1,6 @@
 # Avro 시리얼라이저와 Kotlin
 
-3.5.3에서 `GenericRecord`와 생성된 클래스를 같이 보내 보면서 정리한 복습 노트다. 책 경로는 `BookAvroSerializer`, 파일과 Schema Registry에서 스키마를 읽는 경로는 `CurrentAvroSerializer`다. 레지스트리의 subject와 등록은 [schema-registry.md](schema-registry.md)를 본다.
+3.5.3에서 `GenericRecord`와 생성된 클래스를 같이 보내 보면서 정리한 복습 노트다. 책 경로는 `BookAvroSerializer`, 파일과 Schema Registry에서 스키마를 읽는 경로는 `CurrentAvroSerializer`다. 레지스트리의 subject와 등록은 [schema-registry.md](schema-registry.md)를 본다. 세 가지 JVM 타입과 `specific.avro.reader` 비교는 [avro-record-types.md](avro-record-types.md)를 본다.
 
 한 줄로 말하면, Kafka에 나가는 바이트는 방식이 같아도 JVM 안의 타입은 세 갈래다.
 
@@ -93,7 +93,7 @@ Kotlin 코드는 생성된 자바 클래스를 그냥 호출한다. 빌더는 �
 
 ## Kotlin avro4k
 
-avro4k는 kotlinx.serialization으로 Avro를 다루는 Kotlin 라이브러리다. 이 저장소는 2.10.0을 `ch03-producer`에만 둔다.
+avro4k는 kotlinx.serialization으로 Avro를 다루는 Kotlin 라이브러리다. 이 저장소는 2.13.0을 `ch03-producer`에만 둔다. 2.13이 Confluent 8.4의 `getDatumReader(SchemaId, Schema, Schema)`를 덮어서 `SpecificAvro4kKafkaDeserializer`와 `ReflectAvro4kKafkaDeserializer`가 데이터 클래스를 돌려준다.
 
 `io.github.avro-kotlin`이 `src/main/avro/*.avsc`를 `build/generated/sources/avro/main`의 데이터 클래스로 만든다. 생성된 `Customer`는 `@Serializable`이고, 스키마 JSON은 `@AvroGenerated`에 있다. `SpecificRecord`를 구현하지 않는다.
 

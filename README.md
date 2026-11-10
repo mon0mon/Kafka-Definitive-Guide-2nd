@@ -2,7 +2,7 @@
 
 책 챕터별 Gradle 서브프로젝트입니다. `run`이 Docker Compose로 Kafka를 먼저 올립니다.
 
-설정 상세는 [docs/configuration.md](docs/configuration.md)를 봅니다. Avro의 GenericRecord, SpecificRecord, Kotlin 처리와 자바 호환은 [avro-serializer-kotlin.md](ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/s05_serializer/avro-serializer-kotlin.md)를 봅니다. Schema Registry 등록과 조회는 [schema-registry.md](ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/s05_serializer/schema-registry.md)를 봅니다.
+설정 상세는 [docs/configuration.md](docs/configuration.md)를 봅니다. Avro의 GenericRecord, SpecificRecord, Kotlin 처리와 자바 호환은 [avro-serializer-kotlin.md](ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/s05_serializer/avro-serializer-kotlin.md)를 봅니다. 세 타입의 시리얼라이저 짝과 `specific.avro.reader`는 [avro-record-types.md](ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/s05_serializer/avro-record-types.md)를 봅니다. Schema Registry 등록과 조회는 [schema-registry.md](ch03-producer/src/main/kotlin/xyz/mon0mon/ch03/s05_serializer/schema-registry.md)를 봅니다.
 
 ## 필요 환경
 

@@ -12,7 +12,7 @@ Kafka: The Definitive Guide 2nd Edition을 코드로 따라가기 위한 학습 
 | kafka-clients | 4.4.0 | `gradle/libs.versions.toml` |
 | Apache Avro | 1.12.2 | `gradle/libs.versions.toml` |
 | kafka-avro-serializer | 8.4.0 (Confluent Platform, Kafka 4.4) | `gradle/libs.versions.toml`, `kotlin-library.conventions` |
-| avro4k | 2.10.0 (`io.github.avro-kotlin`, `avro4k-confluent-kafka-serializer`, Kotlin serialization) | `ch03-producer`만. `src/main/avro/*.avsc` → Kotlin 클래스 |
+| avro4k | 2.13.0 (`io.github.avro-kotlin`, `avro4k-confluent-kafka-serializer`, Kotlin serialization) | `ch03-producer`만. `src/main/avro/*.avsc` → Kotlin 클래스 |
 | Schema Registry | `confluentinc/cp-schema-registry:8.4.0` | `docker/compose-*.yml` |
 | 로깅 | kotlin-logging 8.0.4 + Logback 1.5.21 | `gradle/libs.versions.toml`, `common/.../logback.xml` |
 | 브로커 이미지 | `apache/kafka:4.4.0` (KRaft) | `docker/compose-*.yml` |

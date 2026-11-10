@@ -35,6 +35,12 @@ tasks.withType<Test>().configureEach {
     // 이미지 태그는 catalog의 kafka, confluent 버전과 같게 둔다.
     systemProperty("kafka.image", "apache/kafka:${libs.versions.kafka.get()}")
     systemProperty("schema.registry.image", "confluentinc/cp-schema-registry:${libs.versions.confluent.get()}")
+    // Avro 1.12는 스키마 풀네임과 같은 클래스를 로드하기 전에 이 값을 본다.
+    // 테스트 JVM이 뜬 뒤에 넣으면 늦다.
+    systemProperty(
+        "org.apache.avro.SERIALIZABLE_PACKAGES",
+        "customerManagement.avro,study.specific",
+    )
 }
 
 application {

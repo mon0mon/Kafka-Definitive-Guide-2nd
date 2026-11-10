@@ -15,11 +15,11 @@ class BookCustomSerializer : Serializer<Customer> {
         try {
             if (data == null) return null
 
-            val serializedName = if (data.customerName.isNotBlank()) data.customerName.toByteArray(Charsets.UTF_8) else ByteArray(0)
-            val stringSize = if (data.customerName.isNotBlank()) data.customerName.length else 0
+            val serializedName = if (data.name.isNotBlank()) data.name.toByteArray(Charsets.UTF_8) else ByteArray(0)
+            val stringSize = if (data.name.isNotBlank()) data.name.length else 0
 
             val buffer = ByteBuffer.allocate(4 + 4 + stringSize)
-            buffer.putInt(data.customerId)
+            buffer.putInt(data.id)
             buffer.putInt(stringSize)
             buffer.put(serializedName)
 
