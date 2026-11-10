@@ -50,10 +50,13 @@ chapter {
     examples.put("S08Current", "xyz.mon0mon.ch04.s08_specific_offset.CurrentSpecificOffset")
     examples.put("S09Book", "xyz.mon0mon.ch04.s09_exit_poll_loop.BookExitPollLoop")
     examples.put("S09Current", "xyz.mon0mon.ch04.s09_exit_poll_loop.CurrentExitPollLoop")
+    examples.put("S101Book", "xyz.mon0mon.ch04.s10_custom_deserializer.BookCustomerRoundTrip")
+    examples.put("S101Current", "xyz.mon0mon.ch04.s10_custom_deserializer.CurrentCustomerRoundTrip")
 }
 
 dependencies {
     implementation(project(":common"))
+    implementation(project(":ch03-producer"))
 }
 
 application {
