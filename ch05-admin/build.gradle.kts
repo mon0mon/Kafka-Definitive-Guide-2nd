@@ -6,6 +6,8 @@ plugins {
 
 chapter {
     kafkaCluster.set(KafkaCluster.SINGLE)
+    examples.put("S03Book", "xyz.mon0mon.ch05.s03_topic_management.BookTopicManagement")
+    examples.put("S03Current", "xyz.mon0mon.ch05.s03_topic_management.CurrentTopicManagement")
 }
 
 dependencies {
@@ -13,5 +15,5 @@ dependencies {
 }
 
 application {
-    mainClass.set("xyz.mon0mon.ch05.s02_create_admin.CurrentCreateAdminClient")
+    mainClass.set("xyz.mon0mon.ch05.s03_topic_management.CurrentTopicManagement")
 }
