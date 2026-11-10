@@ -55,6 +55,8 @@ chapter {
     examples.put("S101Current", "xyz.mon0mon.ch04.s10_custom_deserializer.CurrentCustomerRoundTrip")
     examples.put("S102Book", "xyz.mon0mon.ch04.s102_avro_deserializer.BookAvroDeserializer")
     examples.put("S102Current", "xyz.mon0mon.ch04.s102_avro_deserializer.CurrentAvroDeserializer")
+    examples.put("S11Book", "xyz.mon0mon.ch04.s11_standalone_consumer.BookStandaloneConsumer")
+    examples.put("S11Current", "xyz.mon0mon.ch04.s11_standalone_consumer.CurrentStandaloneConsumer")
 }
 
 dependencies {
