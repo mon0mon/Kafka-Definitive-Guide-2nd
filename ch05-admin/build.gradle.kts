@@ -20,6 +20,12 @@ chapter {
 
 dependencies {
     implementation(project(":common"))
+    // MockAdminClient는 공개 API가 아니다. 4.4부터 test-fixtures 분류에 있다.
+    testImplementation(libs.kafka.clients.test.fixtures) {
+        artifact {
+            classifier = "test-fixtures"
+        }
+    }
 }
 
 application {

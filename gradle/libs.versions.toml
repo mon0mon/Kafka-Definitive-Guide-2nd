@@ -12,6 +12,7 @@ testcontainers = "2.0.5"
 
 [libraries]
 kafka-clients = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
+kafka-clients-test-fixtures = { module = "org.apache.kafka:kafka-clients", version.ref = "kafka" }
 avro = { module = "org.apache.avro:avro", version.ref = "avro" }
 kafka-avro-serializer = { module = "io.confluent:kafka-avro-serializer", version.ref = "confluent" }
 avro4k-confluent-kafka-serializer = { module = "com.github.avro-kotlin.avro4k:avro4k-confluent-kafka-serializer", version.ref = "avro4k" }
