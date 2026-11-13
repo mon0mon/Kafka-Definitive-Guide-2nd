@@ -12,6 +12,8 @@ chapter {
     examples.put("S04Current", "xyz.mon0mon.ch05.s04_config_management.CurrentConfigManagement")
     examples.put("S05Book", "xyz.mon0mon.ch05.s05_consumer_group.BookConsumerGroupManagement")
     examples.put("S05Current", "xyz.mon0mon.ch05.s05_consumer_group.CurrentConsumerGroupManagement")
+    examples.put("S06Book", "xyz.mon0mon.ch05.s06_cluster_metadata.BookClusterMetadata")
+    examples.put("S06Current", "xyz.mon0mon.ch05.s06_cluster_metadata.CurrentClusterMetadata")
 }
 
 dependencies {
